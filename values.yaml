@@ -53,16 +53,22 @@ webVaultEnabled: "true"
 adminToken: "R@ndomToken$tring"
 ## @param signupDomains List of domain names for users allowed to register
 ##
-signupDomains: "contoso.com"
+signupDomains: ""
 ## @param signupsVerify Whether to require account verification for newly-registered users.
 ##
 signupsVerify: "true"
 ## @param showPassHint Whether a password hint should be shown in the page.
 ##
 showPassHint: "false"
+## @param signapsAllowed Whether signups are allowed
+##
+signupsAllowed: "true"
+
 ## @param fullnameOverride String to override the application name.
 ##
 fullnameOverride: ""
+
+
 ## @param serviceAccount.create Create a service account
 ## @param serviceAccount.name Name of the service account to create
 ##
@@ -131,6 +137,8 @@ service:
   ##
   annotations: {}
 
+  name: vaultwarden
+
 ## @section Database Configuration
 ##
 database:
@@ -160,6 +168,8 @@ database:
 ## @section SMTP Configuration
 ##
 smtp:
+  # Enable/disable
+  enabled: false
   ## @param smtp.host SMTP host
   ##
   host: ""

@@ -228,7 +228,7 @@ Detailed configuration options can be found in the [Storage Configuration](#stor
 | Name                    | Description                                                         | Value               |
 | ----------------------- | ------------------------------------------------------------------- | ------------------- |
 | `adminToken`            | The admin token used for /admin                                     | `R@ndomToken$tring` |
-| `signupDomains`         | List of domain names for users allowed to register                  | `contoso.com`       |
+| `signupDomains`         | List of domain names for users allowed to register                  | ``       |
 | `signupsVerify`         | Whether to require account verification for newly-registered users. | `true`              |
 | `showPassHint`          | Whether a password hint should be shown in the page.                | `false`             |
 | `fullnameOverride`      | String to override the application name.                            | `""`                |
