@@ -68,6 +68,13 @@ signupsAllowed: "true"
 ##
 fullnameOverride: ""
 
+## @param invitationOrgName String Name shown in the invitation emails that don't come from a specific organization
+##
+invitationOrgName: "Vaultwarden"
+
+## @param iconBlacklistNonGlobalIps Whether block non-global IPs.
+## Useful to secure your internal environment: See https://en.wikipedia.org/wiki/Reserved_IP_addresses for a list of IPs which it will block
+iconBlacklistNonGlobalIps: "true"
 
 ## @param serviceAccount.create Create a service account
 ## @param serviceAccount.name Name of the service account to create
@@ -227,3 +234,14 @@ storage:
   ## @param storage.dataDir Specify the data directory
   ##
   dataDir: "/data"
+
+## @section Backup Configuration
+##
+backup:
+  ## @param backup.enabled Enable backup
+  ##
+  enabled: true
+
+  ## @param backup.rcloneConfig Raw rClone backup
+  ## Recommended to provide as an encrypted content
+  rcloneConfig: ""
