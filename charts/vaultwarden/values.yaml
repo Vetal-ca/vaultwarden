@@ -85,7 +85,7 @@ signupsAllowed: true
 invitationsAllowed: true
 ## @param signupDomains List of domain names for users allowed to register
 ##
-signupDomains: "contoso.com"
+signupDomains: ""
 ## @param signupsVerify Whether to require account verification for newly-registered users.
 ##
 signupsVerify: "true"
@@ -95,6 +95,27 @@ showPassHint: "false"
 ## @param fullnameOverride String to override the application name.
 ##
 fullnameOverride: ""
+
+## @param invitationOrgName String Name shown in the invitation emails that don't come from a specific organization
+##
+invitationOrgName: "Vaultwarden"
+
+## @param iconBlacklistNonGlobalIps Whether block non-global IPs.
+## Useful to secure your internal environment: See https://en.wikipedia.org/wiki/Reserved_IP_addresses for a list of IPs which it will block
+iconBlacklistNonGlobalIps: "true"
+
+## @param ipHeader Client IP Header, used to identify the IP of the client
+##
+ipHeader: "X-Real-IP"
+
+
+## @param serverEnvVars additional server's env vars
+##
+serverEnvVars: {}
+#  someVar:
+#    name: MY_ENV_VAR
+#    value: "its-value"
+
 ## @param serviceAccount.create Create a service account
 ## @param serviceAccount.name Name of the service account to create
 ##
@@ -102,6 +123,14 @@ serviceAccount:
   create: true
   name: "vaultwarden-svc"
 
+
+## @param runAsUser user ID for VaultWarden and backup run with
+##
+runAsUser: 1100
+
+## @param runAsGroup group ID for VaultWarden and backup run with
+## Same as default user for vaultwarden-backup
+runAsGroup: 1100
 
 ## @section Exposure Parameters
 ##
@@ -169,6 +198,10 @@ service:
   ## @param service.labels Additional labels for the service
   ##
   labels: {}
+
+  ## @param service.name Vaultwarden service/ingress name
+  ##
+  name: vaultwarden
 
 ## @section Database Configuration
 ##
@@ -332,3 +365,60 @@ tolerations: []
 ## @param statefulsetlabels Additional labels for the statefulset
 ##
 statefulsetlabels: {}
+
+## @section Backup Configuration
+## https://github.com/ttionya/vaultwarden-backup
+backup:
+  ## @param backup.enabled Enable backup
+  ##
+  enabled: false
+
+  ## @param backup.image Backup image FQDN
+  ##
+  image: "ttionya/vaultwarden-backup:1.15.0"
+
+  ## @param backup.rcloneConfig Raw rClone backup
+  ## Recommended to provide as an encrypted content
+  rcloneConfig: ""
+
+  ## @param backup.remoteDir Folder for storing backup files in the storage system.
+  ##
+  #remoteDir: "/BitwardenBackup/"
+
+  remoteName: "vaultWarden"
+
+  globalFlags: ""
+
+#  cron: "5 * * * *"
+
+  zipPassword: "changeme"
+
+  # https://blog.healthchecks.io/2021/09/new-feature-slug-urls/
+  # Obtain from https://healthchecks.io/projects/<project-id>/settings/
+  healthcheckPingKey: "get-from-healthchecks.io"
+
+  #keepDays: 0
+
+  #fileDateSuffix: "-%H-%M-%S"
+
+  timezone: "UTC"
+
+  smtp:
+    enable: false
+    smtpVariables: ""
+    mailTo: ""
+    mailWhenSuccess: false
+    mailWhenFailure: true
+
+  ## An array for backups
+  ## Make sure they not happen at the same time!
+  ## e.g:
+  ## backups:
+  ##   - name: hourly
+  ##     remoteDir: "/BitwardenBackup/hourly/"
+  ##     cron: "5 * * * *"
+  ##     keepDays: 7
+  ##     fileDateSuffix:  "-%H-%M-%S"
+  ##     healthCheckPing: https://hc-ping.com/{ping_key}/vaultwarden-utility
+  ##
+  backups: []
