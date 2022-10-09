@@ -239,6 +239,16 @@ storage:
   ##
   dataDir: "/data"
 
+## @section Extra containers Configuration
+##
+
+## @param initContainers extra init containers for initializing the vaultwarden instance
+##
+initContainers: []
+
+## @param sidecars extra containers running alongside the vaultwarden instance
+##
+sidecars: []
 ## @section Backup Configuration
 ##
 backup:
