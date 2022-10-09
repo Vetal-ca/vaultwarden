@@ -322,6 +322,15 @@ Thus, I have to mention that this chart has to be tested more thoroughly before 
 
 Nevertheless, if you find any issues while using this chart, or have any suggestions, I would appreciate it if you would [submit an issue](https://github.com/guerzon/vaultwarden/issues/new).
 
+## Restore from backup
+
+1. Uninstall previous release
+2. Delete PVC, it will delete old volume
+3. `./restore.sh --archive <archive-file> --release <helm-release> --storage-class <Storage class>`
+   Example: `./restore.sh --archive /tmp/backup.20221103-19-05-01.zip --release main --storage-class "local-path"`
+   
+
+
 ### Todo
 
 1. Implement more configuration options.
