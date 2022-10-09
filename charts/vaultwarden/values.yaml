@@ -375,7 +375,7 @@ backup:
 
   ## @param backup.image Backup image FQDN
   ##
-  image: "ttionya/vaultwarden-backup:1.15.0"
+  image: "ttionya/vaultwarden-backup:1.19.1"
 
   ## @param backup.rcloneConfig Raw rClone backup
   ## Recommended to provide as an encrypted content
