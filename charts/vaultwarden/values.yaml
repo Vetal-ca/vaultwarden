@@ -95,6 +95,14 @@ showPassHint: "false"
 ## @param fullnameOverride String to override the application name.
 ##
 fullnameOverride: ""
+
+## @param serverEnvVars additional server's env vars
+##
+serverEnvVars: {}
+#  someVar:
+#    name: MY_ENV_VAR
+#    value: "its-value"
+
 ## @param serviceAccount.create Create a service account
 ## @param serviceAccount.name Name of the service account to create
 ##
@@ -320,16 +328,16 @@ initContainers: []
 sidecars: []
 
 ## @section Extra Configuration
-##
+  ##
 
 ## @param nodeSelector Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-##
+  ##
 nodeSelector: {}
 
 ## @param affinity Affinity for pod assignment
 ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
-##
+  ##
 affinity: {}
 
 ## @param tolerations Tolerations for pod assignment
@@ -338,5 +346,62 @@ affinity: {}
 tolerations: []
 
 ## @param statefulsetlabels Additional labels for the statefulset
-##
+  ##
 statefulsetlabels: {}
+
+## @section Backup Configuration
+## https://github.com/ttionya/vaultwarden-backup
+backup:
+  ## @param backup.enabled Enable backup
+  ##
+  enabled: false
+
+  ## @param backup.image Backup image FQDN
+  ##
+  image: "ttionya/vaultwarden-backup:1.19.1"
+
+  ## @param backup.rcloneConfig Raw rClone backup
+  ## Recommended to provide as an encrypted content
+  rcloneConfig: ""
+
+  ## @param backup.remoteDir Folder for storing backup files in the storage system.
+  ##
+  #remoteDir: "/BitwardenBackup/"
+
+  remoteName: "vaultWarden"
+
+  globalFlags: ""
+
+#  cron: "5 * * * *"
+
+  zipPassword: "changeme"
+
+  # https://blog.healthchecks.io/2021/09/new-feature-slug-urls/
+  # Obtain from https://healthchecks.io/projects/<project-id>/settings/
+  healthcheckPingKey: "get-from-healthchecks.io"
+
+  #keepDays: 0
+
+  #fileDateSuffix: "-%H-%M-%S"
+
+  timezone: "UTC"
+
+  smtp:
+    enable: false
+    smtpVariables: ""
+    mailTo: ""
+    mailWhenSuccess: false
+    mailWhenFailure: true
+
+  ## An array for backups
+  ## Make sure they not happen at the same time!
+  ## e.g:
+  ## backups:
+  ##   - name: hourly
+  ##     remoteDir: "/BitwardenBackup/hourly/"
+  ##     cron: "5 * * * *"
+  ##     keepDays: 7
+  ##     fileDateSuffix:  "-%H-%M-%S"
+  ##     healthCheckPing: https://hc-ping.com/{ping_key}/vaultwarden-utility
+  ##
+  backups: []

@@ -218,6 +218,21 @@ I have written a detailed post about deploying Vaultwarden in Google Kubernetes 
 
 Refer to the detailed parameter documentation [here](./charts/vaultwarden/README.md).
 
+## Restore from backup
+
+1. Uninstall previous release
+2. Delete PVC, it will delete old volume
+3. `./restore.sh --archive <archive-file> --release <helm-release> --storage-class <Storage class>`
+   Example: `./restore.sh --archive /tmp/backup.20221103-19-05-01.zip --release vaultwarden --storage-class "local-path"`
+
+Namespace and context can be set, while current ones are selected
+Release name is a helm release name, so PVC is named after it
+
+   Example: `./restore.sh --archive /tmp/backup.20221103-19-05-01.zip --release vaultwarden --storage-class "local-path" --namespace vaultwarden --context shome`
+
+
+
+
 ## Uninstall
 
 To uninstall/delete the `vaultwarden-demo` release:
