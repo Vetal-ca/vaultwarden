@@ -118,7 +118,21 @@ fi
 
 echo "Kubernetes context: [${context}], namespace: [${ns}]"
 
-pvc_name="vaultwarden-data-${release}-${chart}-0"
+#{{- if contains $name .Release.Name -}}
+#{{- .Release.Name | trunc 20 | trimSuffix "-" -}}
+#{{- else -}}
+#{{- printf "%s-%s" .Release.Name $name | trunc 20 | trimSuffix "-" -}}
+#{{- end -}}
+
+# bit simplified condition
+if [[ "${release}" =~ .*"${chart}".* ]]; then
+  # release name contained in chart name
+    pvc_name="vaultwarden-data-${chart}-0"
+else
+  # release name not contained in chart name
+  pvc_name="vaultwarden-data-${release}-${chart}-0"
+fi
+
 
 echo "Creating PVC: \"${pvc_name}\" ..."
 
