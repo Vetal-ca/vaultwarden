@@ -291,7 +291,9 @@ backup:
 
   zipPassword: "changeme"
 
-  pingUrl: ""
+  # https://blog.healthchecks.io/2021/09/new-feature-slug-urls/
+  # Obtain from https://healthchecks.io/projects/<project-id>/settings/
+  healthcheckPingKey: "get-from-healthchecks.io"
 
   #keepDays: 0
 
@@ -315,5 +317,6 @@ backup:
   ##     cron: "5 * * * *"
   ##     keepDays: 7
   ##     fileDateSuffix:  "-%H-%M-%S"
+  ##     healthCheckPing: https://hc-ping.com/{ping_key}/vaultwarden-utility
   ##
   backups: []

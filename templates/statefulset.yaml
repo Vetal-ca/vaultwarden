@@ -112,6 +112,10 @@ spec:
               value: {{ .fileDateSuffix | quote }}
             - name: TIMEZONE
               value: {{ $.Values.backup.timezone | quote }}
+            {{- if .healthCheckPing }}
+            - name: PING_URL
+              value: {{ (tpl .healthCheckPing  $) | quote }}
+            {{- end }}
             {{- if $.Values.backup.smtp.enabled }}
             - name: MAIL_SMTP_ENABLE
               value: "true"
@@ -123,10 +127,6 @@ spec:
               value: {{ $.Values.backup.smtp.mailWhenSuccess | quote }}
             - name: MAIL_WHEN_FAILURE
               value: {{ $.Values.backup.smtp.mailWhenFailure | quote }}
-            {{- end }}
-            {{- if $.Values.backup.pingUrl }}
-            - name: PING_URL
-              value: {{ $.Values.backup.pingUrl | quote }}
             {{- end }}
             # When run as non-root, script cannot create crontabs in home folcer
           volumeMounts:
