@@ -12,7 +12,7 @@ image:
   ## @param image.tag Vaultwarden image tag
   ## Ref: https://hub.docker.com/r/vaultwarden/server/tags
   ##
-  tag: "1.28.1"
+  tag: "1.29.1"
   ## @param image.pullPolicy Vaultwarden image pull policy
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
@@ -244,6 +244,8 @@ database:
 ## @section SMTP Configuration
 ##
 smtp:
+  # Enable/disable
+  enabled: false
   ## @param smtp.existingSecret Name of an existing secret containing the SMTP username and password. Also set smtp.username.existingSecretKey and smtp.password.existingSecretKey.
   ##
   existingSecret: ""
