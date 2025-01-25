@@ -37,7 +37,9 @@ Common labels
 {{- define "vaultwarden.labels" -}}
 helm.sh/chart: {{ include "vaultwarden.chart" . }}
 {{ include "vaultwarden.selectorLabels" . }}
-app.kubernetes.io/version: {{ .Values.image.tag | default .Chart.AppVersion | quote }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
@@ -64,3 +66,29 @@ Return the database string
 {{- $var := print .Values.database.type "://" .Values.database.username ":" .Values.database.password "@" .Values.database.host (include "dbPort" . ) "/" .Values.database.dbName }}
 {{- printf "%s" $var }}
 {{- end -}}
+
+{{/*
+Return the appropriate apiVersion for podDisruptionBudget.
+*/}}
+{{- define "podDisruptionBudget.apiVersion" -}}
+{{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.Version -}}
+{{- print "policy/v1" -}}
+{{- else -}}
+{{- print "policy/v1beta1" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Determine whether to use deployment or statefulset
+*/}}
+{{- define "vaultwarden.resourceType" -}}
+{{- if .Values.resourceType }}
+{{- .Values.resourceType }}
+{{- else }}
+{{- if (and (or .Values.storage.data .Values.storage.existingVolumeClaim) (ne .Values.database.type "default")) }}
+{{- "Deployment" }}
+{{- else }}
+{{- "StatefulSet" }}
+{{- end }}
+{{- end }}
+{{- end }}
