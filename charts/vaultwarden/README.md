@@ -337,6 +337,18 @@ attachments:
   keepPvc: true
 ```
 
+To add custom labels to the persistent volume claims, set the `labels` key. This is useful for backup tools, monitoring, or policies that select volumes by label:
+
+```yaml
+data:
+  name: "vaultwarden-data"
+  size: "15Gi"
+  class: "local-path"
+  labels:
+    environment: "production"
+    team: "platform"
+```
+
 ### Using an Existing Persistent Volume Claim
 
 In case you want to use an existing PVC to store your data and attachments (i.e. NAS), `storage.existingVolumeClaim` can be set, which will update the PodSpec to use the provided PVC.  Note, that use of this value will ignore the values of both `storage.data` 
@@ -364,40 +376,41 @@ helm -n $NAMESPACE uninstall $RELEASE_NAME
 
 ### Kubernetes settings
 
-| Name                    | Description                                                                               | Value                |
-| ----------------------- | ----------------------------------------------------------------------------------------- | -------------------- |
-| `image.registry`        | Vaultwarden image registry                                                                | `docker.io`          |
-| `image.repository`      | Vaultwarden image repository                                                              | `vaultwarden/server` |
-| `image.tag`             | Vaultwarden image tag                                                                     | `1.37.0-alpine`      |
-| `image.pullPolicy`      | Vaultwarden image pull policy                                                             | `IfNotPresent`       |
-| `image.pullSecrets`     | Specify docker-registry secrets                                                           | `[]`                 |
-| `image.extraSecrets`    | Vaultwarden image extra secrets                                                           | `[]`                 |
-| `image.extraVars`       | Vaultwarden image extra vars                                                              | `[]`                 |
-| `image.extraVarsCM`     | Vaultwarden image extra vars ConfigMap                                                    | `""`                 |
-| `image.extraVarsSecret` | Vaultwarden image extra vars Secret                                                       | `""`                 |
-| `replicas`              | Number of deployment replicas                                                             | `1`                  |
-| `fullnameOverride`      | String to override the application name.                                                  | `""`                 |
-| `resourceType`          | Can be either Deployment or StatefulSet                                                   | `""`                 |
-| `commonAnnotations`     | Annotations for the deployment or statefulset                                             | `{}`                 |
-| `configMapAnnotations`  | Add extra annotations to the configmap                                                    | `{}`                 |
-| `podAnnotations`        | Add extra annotations to the pod                                                          | `{}`                 |
-| `commonLabels`          | Additional labels for the deployment or statefulset                                       | `{}`                 |
-| `podLabels`             | Add extra labels to the pod                                                               | `{}`                 |
-| `initContainers`        | extra init containers for initializing the vaultwarden instance                           | `[]`                 |
-| `sidecars`              | extra containers running alongside the vaultwarden instance                               | `[]`                 |
-| `extraVolumes`          | Optionally specify extra list of additional volumes                                       | `[]`                 |
-| `extraVolumeMounts`     | Optionally specify extra list of additional volumeMounts                                  | `[]`                 |
-| `nodeSelector`          | Node labels for pod assignment                                                            | `{}`                 |
-| `affinity`              | Affinity for pod assignment                                                               | `{}`                 |
-| `tolerations`           | Tolerations for pod assignment                                                            | `[]`                 |
-| `priorityClassName`     | Assign a priority class to pods                                                           | `""`                 |
-| `serviceAccount.create` | Create a service account                                                                  | `true`               |
-| `serviceAccount.name`   | Name of the service account to create                                                     | `vaultwarden-svc`    |
-| `podSecurityContext`    | Pod security options                                                                      | `{}`                 |
-| `securityContext`       | Default security options to run vault as read only container without privilege escalation | `{}`                 |
-| `dnsConfig`             | Pod DNS options                                                                           | `{}`                 |
-| `enableServiceLinks`    | Enable service links, Kubernetes default is true                                          | `true`               |
-| `extraObjects`          | List of extra Kubernetes objects to create                                                | `[]`                 |
+| Name                        | Description                                                                               | Value                |
+| --------------------------- | ----------------------------------------------------------------------------------------- | -------------------- |
+| `image.registry`            | Vaultwarden image registry                                                                | `docker.io`          |
+| `image.repository`          | Vaultwarden image repository                                                              | `vaultwarden/server` |
+| `image.tag`                 | Vaultwarden image tag                                                                     | `1.37.4-alpine`      |
+| `image.pullPolicy`          | Vaultwarden image pull policy                                                             | `IfNotPresent`       |
+| `image.pullSecrets`         | Specify docker-registry secrets                                                           | `[]`                 |
+| `image.extraSecrets`        | Vaultwarden image extra secrets                                                           | `[]`                 |
+| `image.extraVars`           | Vaultwarden image extra vars                                                              | `[]`                 |
+| `image.extraVarsCM`         | Vaultwarden image extra vars ConfigMap                                                    | `""`                 |
+| `image.extraVarsSecret`     | Vaultwarden image extra vars Secret                                                       | `""`                 |
+| `replicas`                  | Number of deployment replicas                                                             | `1`                  |
+| `fullnameOverride`          | String to override the application name.                                                  | `""`                 |
+| `resourceType`              | Can be either Deployment or StatefulSet                                                   | `""`                 |
+| `commonAnnotations`         | Annotations for the deployment or statefulset                                             | `{}`                 |
+| `configMapAnnotations`      | Add extra annotations to the configmap                                                    | `{}`                 |
+| `podAnnotations`            | Add extra annotations to the pod                                                          | `{}`                 |
+| `commonLabels`              | Additional labels for the deployment or statefulset                                       | `{}`                 |
+| `podLabels`                 | Add extra labels to the pod                                                               | `{}`                 |
+| `initContainers`            | extra init containers for initializing the vaultwarden instance                           | `[]`                 |
+| `sidecars`                  | extra containers running alongside the vaultwarden instance                               | `[]`                 |
+| `extraVolumes`              | Optionally specify extra list of additional volumes                                       | `[]`                 |
+| `extraVolumeMounts`         | Optionally specify extra list of additional volumeMounts                                  | `[]`                 |
+| `nodeSelector`              | Node labels for pod assignment                                                            | `{}`                 |
+| `affinity`                  | Affinity for pod assignment                                                               | `{}`                 |
+| `tolerations`               | Tolerations for pod assignment                                                            | `[]`                 |
+| `topologySpreadConstraints` | Topology spread constraints for pod assignment                                            | `[]`                 |
+| `priorityClassName`         | Assign a priority class to pods                                                           | `""`                 |
+| `serviceAccount.create`     | Create a service account                                                                  | `true`               |
+| `serviceAccount.name`       | Name of the service account to create                                                     | `vaultwarden-svc`    |
+| `podSecurityContext`        | Pod security options                                                                      | `{}`                 |
+| `securityContext`           | Default security options to run vault as read only container without privilege escalation | `{}`                 |
+| `dnsConfig`                 | Pod DNS options                                                                           | `{}`                 |
+| `enableServiceLinks`        | Enable service links, Kubernetes default is true                                          | `true`               |
+| `extraObjects`              | List of extra Kubernetes objects to create                                                | `[]`                 |
 
 ### Reliability configuration
 
